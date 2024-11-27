@@ -7,7 +7,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 @EnableConfigServer
-@EnableScheduling
+//@EnableScheduling
 @SpringBootApplication
 public class NodeConfigurationApplication {
 

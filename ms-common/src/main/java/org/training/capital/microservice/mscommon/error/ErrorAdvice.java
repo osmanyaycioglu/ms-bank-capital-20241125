@@ -1,5 +1,6 @@
 package org.training.capital.microservice.mscommon.error;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -12,23 +13,31 @@ import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class ErrorAdvice {
+    @Autowired
+    private MsProps msProps;
+
+    public ErrorObj fillMsProps(ErrorObj errorObjParam) {
+        errorObjParam.setMicroservice(msProps.getMicroservice());
+        errorObjParam.setBoundedContext(msProps.getBoundedContext());
+        return errorObjParam;
+    }
 
     @ExceptionHandler(IllegalStateException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorObj handle(IllegalStateException exp) {
-        return ErrorObj.builder()
-                       .withErrorDescription(exp.getMessage())
-                       .withErrorCode(1001)
-                       .build();
+        return fillMsProps(ErrorObj.builder()
+                                   .withErrorDescription(exp.getMessage())
+                                   .withErrorCode(1001)
+                                   .build());
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorObj handle(IllegalArgumentException exp) {
-        return ErrorObj.builder()
-                       .withErrorDescription(exp.getMessage())
-                       .withErrorCode(1002)
-                       .build();
+        return fillMsProps(ErrorObj.builder()
+                                   .withErrorDescription(exp.getMessage())
+                                   .withErrorCode(1002)
+                                   .build());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -39,23 +48,23 @@ public class ErrorAdvice {
                                               .withErrorCode(1003)
                                               .withSubErrors(exp.getAllErrors()
                                                                 .stream()
-                                                                .map(e -> ErrorObj.builder()
-                                                                                  .withErrorDescription(e.toString())
-                                                                                  .withErrorCode(1005)
-                                                                                  .build())
+                                                                .map(e -> fillMsProps(ErrorObj.builder()
+                                                                                              .withErrorDescription(e.toString())
+                                                                                              .withErrorCode(1005)
+                                                                                              .build()))
                                                                 .collect(Collectors.toList()))
                                               .build();
-        return validationErrorLoc;
+        return fillMsProps(validationErrorLoc);
     }
 
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorObj handle(Exception exp) {
-        return ErrorObj.builder()
-                       .withErrorDescription(exp.getMessage())
-                       .withErrorCode(5001)
-                       .build();
+        return fillMsProps(ErrorObj.builder()
+                                   .withErrorDescription(exp.getMessage())
+                                   .withErrorCode(5001)
+                                   .build());
     }
 
     private List<ErrorObj> getErrorsFromMANVE(MethodArgumentNotValidException exp) {

@@ -11,9 +11,6 @@ import java.util.List;
 @Data
 @CheckNotValidWords({"abc","123","xyz"})
 public class OrderPlaceRequest {
-    @NotBlank
-    @Size(min = 10, max = 20)
-    private String orderId;
     @NotEmpty
     @Size(min = 2, max = 15)
     private String customerName;

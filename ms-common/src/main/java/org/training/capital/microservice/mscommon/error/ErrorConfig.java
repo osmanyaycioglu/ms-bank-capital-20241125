@@ -11,4 +11,9 @@ public class ErrorConfig {
         return new ErrorAdvice();
     }
 
+    @Bean
+    public MsProps msProps(){
+        return new MsProps();
+    }
+
 }

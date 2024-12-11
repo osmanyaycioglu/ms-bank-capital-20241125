@@ -10,7 +10,12 @@
     <modules>
         <module>node-configuration</module>
         <module>spring-playground</module>
+        <module>node-discovery</module>
+        <module>ms-common</module>
+        <module>ms-order</module>
+        <module>ms-restaurant</module>
     </modules>
+
     <name>ms-bank-capital-20241125</name>
     <url>http://maven.apache.org</url>
 

@@ -15,11 +15,22 @@ public class OrderProcessService {
     private final IOrderProcessFacade orderProcessFacade;
 
 
-    public void placeOrder(Order orderParam) {
-        Order           orderLoc =  orderProcessFacade.checkPreviousOrders(orderParam);
-        CalculatedPrice priceLoc =  orderProcessFacade.getPriceInfo(orderParam);
-        BigDecimal    bigDecimalLoc    = orderProcessFacade.calculateDiscount(orderProcessFacade);
-        PaymentResult paymentResultLoc =  orderProcessFacade.orderPayment(orderParam);
+    public CalculatedPrice placeOrder(Order orderParam) {
+        Order           orderLoc         = orderProcessFacade.checkPreviousOrders(orderParam);
+        CalculatedPrice priceLoc         = orderProcessFacade.getPriceInfo(orderParam);
+        BigDecimal      bigDecimalLoc    = orderProcessFacade.calculateDiscount(orderProcessFacade);
+        PaymentResult   paymentResultLoc = orderProcessFacade.orderPayment(orderParam);
+        return priceLoc;
+    }
+
+    public CalculatedPrice placeOrder2(final Order orderParam) {
+        CalculatedPrice priceLoc         = orderProcessFacade.getPriceInfo2(orderParam);
+        return priceLoc;
+    }
+
+    public CalculatedPrice placeOrder3(final Order orderParam) {
+        CalculatedPrice priceLoc         = orderProcessFacade.getPriceInfo3(orderParam);
+        return priceLoc;
     }
 
 }

@@ -9,7 +9,6 @@ import org.training.capital.microservice.msorder.input.models.OrderPlaceRequest;
 
 @RequestMapping("/api/v1/order/process")
 public interface IOrderProcessRestController {
-    @PostMapping("/place")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @Operation(summary = "order yaratma",
             description = "order yaratma daha açıklamalı",

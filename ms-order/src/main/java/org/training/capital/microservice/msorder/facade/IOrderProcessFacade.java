@@ -14,4 +14,8 @@ public interface IOrderProcessFacade {
     BigDecimal calculateDiscount(IOrderProcessFacade orderProcessFacadeParam);
 
     PaymentResult orderPayment(Order orderParam);
+
+    CalculatedPrice getPriceInfo2(Order orderParam);
+
+    CalculatedPrice getPriceInfo3(Order orderParam);
 }

@@ -1,0 +1,5 @@
+kafka-topics --create --bootstrap-server 127.0.0.1:9092 --topic first-topic --partitions 5 --replication-factor 2
+
+kafka-run-class.bat kafka.tools.DumpLogSegments --deep-iteration --print-data-log --files 00000000000000000000.inx
+
+kafka-producer-perf-test.bat --topic first-topic --num-records 1000000 --throughput -1 --record-size 1024 --producer.config ./config/producer.properties

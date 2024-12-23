@@ -18,29 +18,33 @@ import java.util.Properties;
 
 public class MyKafkaConsumer {
     public static void main(String[] args) {
-        Properties propertiesLoc = new Properties();
-        propertiesLoc.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                          "127.0.0.1:9092,127.0.0.1:9093,127.0.0.1:9094");
-        propertiesLoc.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
-                          IntegerDeserializer.class.getName());
-        propertiesLoc.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
-                          StringDeserializer.class.getName());
-        propertiesLoc.put(ConsumerConfig.GROUP_ID_CONFIG,
-                          "cons-group-1");
-        propertiesLoc.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG,
-                          "earliest");
 
-
-        try (KafkaConsumer<Integer, String> kafkaConsumerLoc = new KafkaConsumer<>(propertiesLoc)) {
-            kafkaConsumerLoc.subscribe(Arrays.asList("test-topic-1"));
-            while (true) {
-                ConsumerRecords<Integer, String> pollLoc = kafkaConsumerLoc.poll(Duration.ofMillis(1_000));
-                for (ConsumerRecord<Integer, String> cr : pollLoc) {
-                    System.out.println("Received  : " + cr);
-                }
-            }
-
+        ConsumerQueue consumerQueueLoc = new ConsumerQueue();
+        for (int i = 0; i < 5; i++) {
+            KafkaMultiConsumer consumerLoc = new KafkaMultiConsumer(consumerQueueLoc,
+                                                                                "cc-" + i);
+            consumerLoc.setName("consumer-" + i);
+            consumerLoc.start();
         }
+
+
+    }
+
+    public static void main2(String[] args) {
+
+        ConsumerQueue consumerQueueLoc = new ConsumerQueue();
+        for (int i = 0; i < 3; i++) {
+            KafkaMultiThreadConsumer consumerLoc = new KafkaMultiThreadConsumer(consumerQueueLoc,
+                                                                                "cc-" + i);
+            consumerLoc.setName("consumer-" + i);
+            consumerLoc.start();
+        }
+        for (int i = 0; i < 10; i++) {
+            ConsumerThread consumerThreadLoc = new ConsumerThread(consumerQueueLoc);
+            consumerThreadLoc.setName("process-" + i);
+            consumerThreadLoc.start();
+        }
+
 
     }
 

@@ -19,7 +19,7 @@ public class MyKafkaProducer {
         propertiesLoc.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
                           StringSerializer.class.getName());
         try (KafkaProducer<Integer, String> kafkaProducerLoc = new KafkaProducer<>(propertiesLoc)) {
-            for (int i = 0; i < 10_000; i++) {
+            for (int i = 0; i < 100; i++) {
                 kafkaProducerLoc.send(new ProducerRecord<>("test-topic-1",
                                                            i,
                                                            "deneme mesajı " + i));

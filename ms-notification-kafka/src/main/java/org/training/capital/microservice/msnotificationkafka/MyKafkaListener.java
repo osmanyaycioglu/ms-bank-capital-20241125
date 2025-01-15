@@ -6,8 +6,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class MyKafkaListener {
 
-    @KafkaListener(topics = "topic1",concurrency = "2")
+    @KafkaListener(topics = "topic1",concurrency = "2",groupId = "group-1")
     public void handleSMS(String message){
+
     }
 
 }

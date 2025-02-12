@@ -1,13 +1,17 @@
 package org.training.capital.microservice.mscommon.error;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,6 +19,8 @@ import java.util.stream.Collectors;
 public class ErrorAdvice {
     @Autowired
     private MsProps msProps;
+
+    private static final Logger logger = LoggerFactory.getLogger(ErrorAdvice.class);
 
     public ErrorObj fillMsProps(ErrorObj errorObjParam) {
         errorObjParam.setMicroservice(msProps.getMicroservice());
@@ -58,9 +64,30 @@ public class ErrorAdvice {
     }
 
 
+
+
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorObj handle(AuthorizationDeniedException exp) {
+        return fillMsProps(ErrorObj.builder()
+                                   .withErrorDescription(exp.getMessage())
+                                   .withErrorCode(4003)
+                                   .build());
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorObj handle(AccessDeniedException exp) {
+        return fillMsProps(ErrorObj.builder()
+                                   .withErrorDescription(exp.getMessage())
+                                   .withErrorCode(4003)
+                                   .build());
+    }
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorObj handle(Exception exp) {
+        logger.error("[ErrorAdvice][handle]-> *Error* : " + exp.getMessage(),exp);
         return fillMsProps(ErrorObj.builder()
                                    .withErrorDescription(exp.getMessage())
                                    .withErrorCode(5001)

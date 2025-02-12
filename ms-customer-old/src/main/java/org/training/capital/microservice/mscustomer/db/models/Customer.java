@@ -14,16 +14,16 @@ import java.util.List;
 public class Customer {
 
     @Id
-    private ObjectId    id;
-    private String      firstName;
-    private String      lastName;
-    private Integer     weight;
-    private Integer     height;
-    private Long        visit = 1L;
-    private Address     address;
-    private List<Phone> phones;
+    private ObjectId        id;
+    private String          firstName;
+    private String          lastName;
+    private Integer         weight;
+    private Integer         height;
+    private Long            visit = 1L;
+    private Address         address;
+    private List<Phone>     phones;
     @Transient
-    private List<Vote>  votes;
-
-    private int status = 1;
+    private List<Vote>      votes;
+    @Transient
+    private CustomerAccount customerAccount;
 }

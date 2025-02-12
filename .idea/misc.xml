@@ -14,6 +14,8 @@
         <option value="$PROJECT_DIR$/ms-notify/pom.xml" />
         <option value="$PROJECT_DIR$/ms-notification-kafka/pom.xml" />
         <option value="$PROJECT_DIR$/ms-customer/pom.xml" />
+        <option value="$PROJECT_DIR$/ms-customer-account/pom.xml" />
+        <option value="$PROJECT_DIR$/ms-customer-aggregator/pom.xml" />
       </list>
     </option>
   </component>

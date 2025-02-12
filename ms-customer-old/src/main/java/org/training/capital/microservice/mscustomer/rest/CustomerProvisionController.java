@@ -28,21 +28,9 @@ public class CustomerProvisionController {
     @MethodTime(tag = "controller.add")
     @PostMapping("/add")
     public String add(@RequestBody Customer customerParam){
-        return customerDao.insertCustomer(customerParam);
-    }
-
-    @GetMapping("/commit")
-    public String commit(@RequestParam String customerId){
-        customerDao.commitCustomer(customerId);
+        customerDao.insertCustomer(customerParam);
         return "OK";
     }
-
-    @GetMapping("/rollback")
-    public String rollback(@RequestParam String customerId){
-        customerDao.rollbackCustomer(customerId);
-        return "OK";
-    }
-
 
     @MethodTime(tag = "controller.getAllCustomersGreaterThan")
     @GetMapping("/find/greater/than/weight")

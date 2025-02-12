@@ -1,6 +1,8 @@
 package org.training.capital.microservice.mscustomer.db;
 
+import jakarta.persistence.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -8,13 +10,15 @@ import org.springframework.transaction.annotation.Transactional;
 import org.training.capital.microservice.mscustomer.aop.MethodTime;
 import org.training.capital.microservice.mscustomer.db.models.Customer;
 
+import javax.sql.DataSource;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class CustomerDao {
-    private final ICustomerRepository customerRepository;
-    private final IVoteRepository     voteRepository;
+    private final ICustomerRepository        customerRepository;
+    private final IVoteRepository            voteRepository;
+    private final ICustomerAccountRepository customerAccountRepository;
 
 //    @PersistenceContext
 //    private EntityManager entityManager;
@@ -43,30 +47,15 @@ public class CustomerDao {
     @Transactional(propagation = Propagation.REQUIRED,
             isolation = Isolation.READ_COMMITTED,
             transactionManager = "mongoTrans")
-    public String insertCustomer(final Customer customerParam) {
+    public void insertCustomer(final Customer customerParam) {
+        customerAccountRepository.save(customerParam.getCustomerAccount());
         customerRepository.save(customerParam);
         customerParam.getVotes()
                      .forEach(v -> v.setCustomerId(customerParam.getId()));
         voteRepository.saveAll(customerParam.getVotes());
-        return customerParam.getId().toString();
     }
 
     public List<Customer> getAllCustomersGreaterThan(final Integer weightParam) {
         return customerRepository.aggregateGreaterWeight(weightParam);
-    }
-
-
-    public void commitCustomer(final String customerIdParam) {
-        Customer customerLoc = customerRepository.findById(customerIdParam)
-                                                 .orElseThrow(() -> new IllegalStateException());
-
-        customerLoc.setStatus(5);
-    }
-
-    public void rollbackCustomer(final String customerIdParam) {
-        Customer customerLoc = customerRepository.findById(customerIdParam)
-                                                 .orElseThrow(() -> new IllegalStateException());
-
-        customerLoc.setStatus(4);
     }
 }

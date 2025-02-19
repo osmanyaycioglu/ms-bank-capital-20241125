@@ -6,9 +6,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.annotation.RequestScope;
 import org.training.capital.microservice.msorder.facade.models.CalculatedPrice;
 import org.training.capital.microservice.msorder.input.mappers.IOrderMapper;
 import org.training.capital.microservice.msorder.input.models.MealDto;
@@ -19,8 +22,20 @@ import org.training.capital.microservice.msorder.service.OrderProcessService;
 
 @RestController
 @RequiredArgsConstructor
+@RefreshScope
 public class OrderProcessRestController implements IOrderProcessRestController {
     private final OrderProcessService orderProcessService;
+
+    @Value("${server.port}")
+    private int port;
+
+    @Value("${a.b.c}")
+    private String abc;
+
+    @GetMapping("/test")
+    public String placeOrder(@RequestParam("name") String name) {
+        return "Hello from : " + port + " : "  + name + " abc : " + abc;
+    }
 
 
     @PostMapping("/place")

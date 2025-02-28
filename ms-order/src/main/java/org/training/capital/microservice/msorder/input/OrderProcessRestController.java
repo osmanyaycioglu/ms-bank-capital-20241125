@@ -1,25 +1,19 @@
 package org.training.capital.microservice.msorder.input;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.annotation.RequestScope;
 import org.training.capital.microservice.msorder.facade.models.CalculatedPrice;
 import org.training.capital.microservice.msorder.input.mappers.IOrderMapper;
-import org.training.capital.microservice.msorder.input.models.MealDto;
 import org.training.capital.microservice.msorder.input.models.OrderPlaceRequest;
-import org.training.capital.microservice.msorder.input.models.Response;
+import org.training.capital.microservice.msorder.input.models.OrderPlaceResponse;
 import org.training.capital.microservice.msorder.service.OrderProcessService;
+import reactor.core.publisher.Mono;
 
 
+@RequestMapping("/api/v1/order/process")
 @RestController
 @RequiredArgsConstructor
 @RefreshScope
@@ -33,8 +27,8 @@ public class OrderProcessRestController implements IOrderProcessRestController {
     private String abc;
 
     @GetMapping("/test")
-    public String placeOrder(@RequestParam("name") String name) {
-        return "Hello from : " + port + " : "  + name + " abc : " + abc;
+    public Mono<String> placeOrder(@RequestParam("name") String name) {
+        return Mono.just("Hello from : " + port + " : " + name + " abc : " + abc);
     }
 
 

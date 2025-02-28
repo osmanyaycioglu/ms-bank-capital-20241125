@@ -17,6 +17,7 @@
         <option value="$PROJECT_DIR$/ms-customer-account/pom.xml" />
         <option value="$PROJECT_DIR$/ms-customer-aggregator/pom.xml" />
         <option value="$PROJECT_DIR$/apigw-order/pom.xml" />
+        <option value="$PROJECT_DIR$/ms-order-reactive/pom.xml" />
       </list>
     </option>
   </component>

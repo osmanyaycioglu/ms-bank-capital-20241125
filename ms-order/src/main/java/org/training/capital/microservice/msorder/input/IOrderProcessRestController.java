@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.training.capital.microservice.msorder.input.models.OrderPlaceRequest;
+import org.training.capital.microservice.msorder.input.models.OrderPlaceResponse;
 
 @RequestMapping("/api/v1/order/process")
 public interface IOrderProcessRestController {

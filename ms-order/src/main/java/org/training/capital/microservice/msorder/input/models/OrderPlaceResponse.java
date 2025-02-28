@@ -1,4 +1,4 @@
-package org.training.capital.microservice.msorder.input;
+package org.training.capital.microservice.msorder.input.models;
 
 import lombok.Data;
 
